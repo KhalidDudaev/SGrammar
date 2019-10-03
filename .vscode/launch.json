@@ -1,0 +1,13 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - App",
+            "request": "launch",
+            // "console": "externalTerminal",
+            "console": "internalConsole",
+            "mainClass": "com.dudaev.khalid.app.App",
+            "projectName": "SGrammar"
+        }
+    ]
+}
