@@ -15,7 +15,7 @@ public class Expression {
         parser.setTokenAction(new ParserToken(parser));
         parser.setSyntaxAction(new ParserSyntax(parser));
 
-        String rulesText                = file.read("expression.rule");
+        String rulesText                = file.read("src/com/dudaev/khalid/app/lib/expression.rule");
 
         parser.rules(rulesText);
     }
