@@ -39,16 +39,7 @@ public class Parser {
     private Object actionSyntax;
 
     public Parser() {
-        // this.lexer        = lexer;
-        // this.grammar    = grammar;
 
-        // this.tokens.addAll(lexer.getTokens());
-        // this.table      = table;
-        // stackRule.addAll(gtokens.listGTokens());
-        // this.stackRule.addAll(grammar.getGTokens().listGTokens());
-
-
-        // this.init();
     }
 
     private void init(){
@@ -128,87 +119,58 @@ public class Parser {
         return grammar.getTable().getSYNTAX();
     }
 
-    public void start(){
+    public Object start(String source){
+        this.sourceText = source;
+        return start();
+    }
+
+    public Object start(){
         this.init();
 
         stackNode.push(new GNode("$", null, null, true));
         stackNode.push(grammar.getRules().list().get(0).getNode());
 
-        parse();
+        return parse();
     }
 
-    private void parse(){
+    private Object parse(){
         boolean error = false;
         while(!error && peekStack().getNode() != "$"){
 
             GNode sp = peekStack();
             Token tp = peek(0);
-            // System.out.println("STACK: " + stackNode);
-            // System.out.println("TOKEN: " + tp.type);
 
             String node     = sp.getNode();
             GRule rule      = grammar.getRules().get(sp.getRule());
-            String ac       = null;
-            
-            // if(rule != null && rule.getAction() != null) {
-                ac = rule.getAction();
-            //     runAction(ac, tp);
-            // }
-            
-            // runAction(sp.getAction(), tp);
+            String ac       = rule.getAction();
 
             if(sp.isTERMINAL()){
-
                 if(node.equals("e")){
-                    // runAction(ac, tp);
                     nextStack();
                 } 
                 // else
                 if(sp.isTERMINAL() && node.matches(tp.type)) {
-                    // System.out.println("sp && tp | '" + node + "' : '" + tp.type + "'");
-                    // System.out.println("#####: "+ node + " : " + tp.content + " > " + sp.getRule());
-
-                    // runAction(gtokens.get(tp.type).getAction(), tp);
-
-                    // if(rule != null) System.out.println("RUL: " + rule.getName());
-
-                    // runAction(sp.getAction(), tp);
                     runAction(ac, tp);
-
                     nextStack();
                     nextToken();
-                    // skeepNoParse();
                 } 
             } else {
-
-                // runAction(ac, tp);
-
                 GNode rem = nextStack();
                 GProduction prod = syntax().getProduction(tp.type, rem.getNode());
                 if(prod != null) {
                     push2Stack(prod);
                 } else {
                     error = true;
-                    // System.err.println("ERROR! SYNTAX: " + tp);
                     runAction("error", tp);
                 }
             }
         }
-
-        endAction();
-
-        // System.out.println("END MATCHING");
-        // System.out.println(endAction());
-
+        return endAction();
     }
 
     private void runAction(String actionName, Token token) {
         Method meth             = null;
         boolean methodExists    = false;
-    //     // ArrayList<Objects> ret = new ArrayList<>();
-        // Token retToken = null;
-
-        // if(actionName != null) System.out.println("&&&&&&&&&&&&&&&&& " + actionName);
 
         try {
             meth = actionSyntax.getClass().getDeclaredMethod( actionName, Token.class );
@@ -216,7 +178,6 @@ public class Parser {
                 methodExists                                    = true;
                 // retToken = (Token) 
                 meth.invoke(actionSyntax, token);
-                
             } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException | NullPointerException e) {
                 methodExists                                    = false;
             }
@@ -229,17 +190,17 @@ public class Parser {
         // return retToken;
     }
 
-    private void endAction() {
+    private Object endAction() {
         Method meth             = null;
         boolean methodExists    = false;
-        // String result = "";
+        Object result = null;
 
         try {
             meth = actionSyntax.getClass().getDeclaredMethod( "endParsing" );
             try {
                 methodExists                                    = true;
                 // retToken = (Token) 
-                meth.invoke(actionSyntax);
+                result = meth.invoke(actionSyntax);
                 
             } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException | NullPointerException e) {
                 methodExists                                    = false;
@@ -250,7 +211,7 @@ public class Parser {
 
         // refToken
 
-        // return result;
+        return result;
     }
     
 

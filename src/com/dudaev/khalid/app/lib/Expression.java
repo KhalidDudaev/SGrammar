@@ -20,9 +20,8 @@ public class Expression {
         parser.rules(rulesText);
     }
 
-    public void compile(String source){
-        parser.source(source);
-        parser.start();
+    public String eval(String source){
+        return (String) parser.start(source);
     }
 
     

@@ -85,23 +85,43 @@ public class ParserSyntax {
     }
 
     private void addOP(Token operator, Integer level){
+        // String a = null;
+        // String b = null;
         while(stackOP.size() > 0 && level <= stackOP.peek().level){
-            stackVAL.push(stackOP.pop().op.content);
+            // stackVAL.push(stackOP.pop().op.content);
+            stackVAL.push(exec(stackVAL.pop(), stackVAL.pop(), stackOP.pop().op.content));
         }
         stackOP.push(new Operator(operator, level));
+    }
+
+    private String exec(String b, String a, String op) {
+        Double res = 0.0;
+
+        switch (op) {
+            case "+": res = Double.parseDouble(a) + Double.parseDouble(b); break;
+            case "-": res = Double.parseDouble(a) - Double.parseDouble(b); break;
+            case "*": res = Double.parseDouble(a) * Double.parseDouble(b); break;
+            case "/": res = Double.parseDouble(a) / Double.parseDouble(b); break;
+            default:
+                break;
+        }
+
+        return res.toString();
     }
 
     public void error(Token token){
         System.err.println("ERROR! SYNTAX >> L:" + token.line + " C:" + token.column + " >> '" + token.content + "'");
     } 
 
-    public void endParsing(){
+    public String endParsing(){
         // stackVAL.add(stackOP.pop().op.content);
         while(!stackOP.empty()) {
-            stackVAL.push(stackOP.pop().op.content);
+            // stackVAL.push(stackOP.pop().op.content);
+            stackVAL.push(exec(stackVAL.pop(), stackVAL.pop(), stackOP.pop().op.content));
         }
 
-        System.out.println(stackVAL.toString());
+        // System.out.println(stackVAL.toString());
+        return stackVAL.pop().toString();
     }
     
     private class Operator {
