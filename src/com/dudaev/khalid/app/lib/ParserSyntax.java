@@ -23,16 +23,17 @@ public class ParserSyntax {
 
     public void opAS(Token token){
         // System.out.println("OP " + token.content + " | " + this.parser.stackNode.size());
-        addOP(token, this.parser.stackNode.size());
+        // System.out.println("&&& opAS " + token.content);
+        // addOP(token, this.parser.stackNode.size());
     }
 
     public void opMD(Token token){
         // System.out.println("OP " + token.content + " | " + this.parser.stackNode.size());
-        addOP(token, this.parser.stackNode.size());
+        // addOP(token, this.parser.stackNode.size());
     }
 
     public void paren(Token token){
-        System.out.println("PRN " + token.content + " | " + this.parser.stackNode.size());
+        // System.out.println("PRN " + token.content + " | " + this.parser.stackNode.size());
     }
 
     public void lparen(Token token){
@@ -57,26 +58,35 @@ public class ParserSyntax {
     }
 
     public void opADD(Token token){
-        System.out.println("ADD " + token.content + " ");
+        // System.out.println("ADD " + token.content + " ");
+        addOP(token, this.parser.stackNode.size());
     }
 
     public void opSUB(Token token){
-        System.out.println("SUB " + token.content + " ");
+        // System.out.println("SUB " + token.content + " ");
+        addOP(token, this.parser.stackNode.size());
     }
 
     public void opMUL(Token token){
-        System.out.println("MUL " + token.content + " ");
+        // System.out.println("MUL " + token.content + " ");
+        addOP(token, this.parser.stackNode.size());
     }
 
     public void opDIV(Token token){
-        System.out.println("DIV " + token.content + " ");
+        // System.out.println("DIV " + token.content + " ");
+        addOP(token, this.parser.stackNode.size());
+    }
+
+    public void opPOW(Token token){
+        // System.out.println("POW " + token.content + " ");
+        addOP(token, this.parser.stackNode.size());
     }
 
     public void ident(Token token){
-        System.out.println("IDT " + token.content + " ");
+        // System.out.println("IDT " + token.content + " ");
     }
     public void number(Token token){
-        System.out.println("NUM " + token.content + " ");
+        // System.out.println("NUM " + token.content + " ");
     }
 
     private void addVAL(Token val){
@@ -102,6 +112,7 @@ public class ParserSyntax {
             case "-": res = Double.parseDouble(a) - Double.parseDouble(b); break;
             case "*": res = Double.parseDouble(a) * Double.parseDouble(b); break;
             case "/": res = Double.parseDouble(a) / Double.parseDouble(b); break;
+            case "^": res = Math.pow(Double.parseDouble(a), Double.parseDouble(b)); break;
             default:
                 break;
         }

@@ -200,10 +200,9 @@ public class Grammar {
             
             for( String prod : prods.split("\\s*\\|\\s*")){
                 
-                // System.out.println("RULE PROD: " + prod);
-
+                
                 ArrayList<GNode> nodes = new ArrayList<>();
-
+                
                 prod            = prod.trim();
                 Matcher mProds  = Pattern.compile("(?s)\\&\\b(?<actionProd>\\w+)\\b").matcher(prod);
                 
@@ -211,6 +210,7 @@ public class Grammar {
                     action  = mProds.group("actionProd");
                     prod    = mProds.replaceFirst("");
                     prod    = prod.trim();
+                    // System.out.println("RULE PROD: " + action);
                 }
 
                 for(String node : prod.split("\\s+")) {

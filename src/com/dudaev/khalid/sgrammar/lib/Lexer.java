@@ -251,15 +251,19 @@ public class Lexer {
                 methodExists                                    = true;
                 retToken = (Token) meth.invoke(action, token, m);
                 
-                if (setLexemLenght > 0) {
-                    column                                      += retToken.setLexemLenght;
-                    retToken.lenght                                = retToken.setLexemLenght;
-                } else {
-                    column                                      += lexemLenght;
-                    retToken.lenght                                = lexemLenght;
-                }
-                isParse                                         = true;
-                setLexemLenght                                  = 0;
+                // if (setLexemLenght > 0) {
+                //     column                                      += retToken.setLexemLenght;
+                //     retToken.lenght                                = retToken.setLexemLenght;
+                // } else {
+                //     column                                      += lexemLenght;
+                //     retToken.lenght                                = lexemLenght;
+                // }
+
+                column                  += lexemLenght;
+                retToken.lenght         = lexemLenght;
+
+                isParse                 = true;
+                setLexemLenght          = 0;
                 
             } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException | NullPointerException e) {
                 methodExists                                    = false;

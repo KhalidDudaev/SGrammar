@@ -137,26 +137,38 @@ public class Parser {
         boolean error = false;
         while(!error && peekStack().getNode() != "$"){
 
-            GNode sp = peekStack();
-            Token tp = peek(0);
+            GNode sp            = peekStack();
+            Token tp            = peek(0);
 
-            String node     = sp.getNode();
-            GRule rule      = grammar.getRules().get(sp.getRule());
-            String ac       = rule.getAction();
+            String node         = sp.getNode();
+            GRule rule          = grammar.getRules().get(sp.getRule());
+            GProduction prod    = syntax().getProduction(tp.type, sp.getNode());
+
+            String acRule       = rule.getAction();
+            String acProd       = sp.getAction();
+            // String acProd       = null;
+            
+            // if(prod != null) acProd = prod.getAction();
+
+            // if(acRule != null) runAction(acRule, tp);
 
             if(sp.isTERMINAL()){
                 if(node.equals("e")){
                     nextStack();
                 } 
-                // else
-                if(sp.isTERMINAL() && node.matches(tp.type)) {
-                    runAction(ac, tp);
+                else if(node.matches(tp.type)) {
+                    runAction(acRule, tp);
+                    runAction(acProd, tp);
                     nextStack();
                     nextToken();
                 } 
             } else {
-                GNode rem = nextStack();
-                GProduction prod = syntax().getProduction(tp.type, rem.getNode());
+                // GNode rem = nextStack();
+                // GProduction prod = syntax().getProduction(tp.type, rem.getNode());
+                nextStack();
+
+                // runAction(acProd, tp);
+
                 if(prod != null) {
                     push2Stack(prod);
                 } else {
@@ -182,7 +194,7 @@ public class Parser {
                 methodExists                                    = false;
             }
         } catch (NullPointerException | SecurityException | NoSuchMethodException e) { 
-            System.err.println("WARNING: Not found action of parser - " + actionName);
+            // System.err.println("WARNING: Not found action of parser - " + actionName);
         }
 
         // refToken
