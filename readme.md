@@ -1,5 +1,4 @@
-#
-Simple Grannar Library
+# Simple Grammar Library
 
 ## Description
 
@@ -31,12 +30,12 @@ Also have the token 'space' for spaces. The spaces for our grammar not significa
 
 ``` java
 public class ParserLexer {
-    Lexer lexer;
+    Parser parser;
 
     public ParserLexer () {}
 
-    public ParserLexer (Lexer parent) {
-        this.lexer = parent;
+    public ParserLexer (Parser parent) {
+        this.parser = parent;
     }
 
     public Token space (Token token, Matcher m) {
@@ -85,8 +84,4 @@ MD | opmul | opdiv;
 F | lparen E rparen | number;
 ```
 There are terminals and non-terminals in this grammar. We designated nonterminals in capital letters, and terminals in token names from lexical rules. In this grammar contain the special token 'e' for designated empty set.
-
-
-
-
 
