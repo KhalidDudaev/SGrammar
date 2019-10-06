@@ -15,21 +15,26 @@ TOKEN:
 
 SYNTAX:
 
-    E                       &actionE 
-        | T E_              &actionTE_
+    E                       
+        | T E_              
         ;
 
-    E_                      &actionE_
-        | AS T E_           &actionASTE_
-        | e                 &actionEPSILON
-        ;
-
-    T   | F T_;
-
-    T_  
-        | MD F T_
+    E_                      
+        | AS T E_           
         | e
         ;
+
+    T   | P T_;
+
+    T_  
+        | MD P T_
+        | e
+        ;
+
+    P   | F P_;
+
+    P_  | oppower F P_      &opPOW
+        | e;
 
     AS                      &opAS
         | opadd             &opADD
@@ -41,10 +46,10 @@ SYNTAX:
         | opdiv             &opDIV
         ;
 
-    F                       &fact
-        | lparen E rparen   &paren
-        | number            &number
-        | ident             &ident
+    F                           &fact
+        | lparen E rparen       &paren
+        | number                 &number
+        | ident               &ident
         ;
 
 
