@@ -9,9 +9,9 @@ TOKEN:
     opmul       | \*;
     opdiv       | \/;
     oppower     | \^;
-    space       | (?:(?!\r?\n)\s)+                                                                  &space;
-    nline       | \r?\n                                                                             &nline;
-    error       | .                                                                                 &error;
+    space       | (?:(?!\r?\n)\s)+                                                                  &space ;
+    nline       | \r?\n                                                                             &nline ;
+    error       | .                                                                                 &error ;
 
 SYNTAX:
 
