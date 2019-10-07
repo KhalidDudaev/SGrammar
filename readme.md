@@ -79,7 +79,7 @@ operator &op
 ```
 
 Now we will write the rules for the expression, which was discussed above.
-```
+```scss
     E   | T E_;
 
     E_  | AS T E_
