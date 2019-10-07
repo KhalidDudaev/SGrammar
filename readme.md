@@ -67,7 +67,7 @@ error   | . &error;
 
 Each rule for syntax begins with the name of the rule and after it is one or more productions. Each production begins with '|". After, if there is, we can write the name of the method that will perform the additional action as for rule also for production. The rule ends with a ';'. For example:
 
-```pug
+```scss
 // rule name                                method name for this production 
 //    |   method name for this rule            |
 //    |      |                                 |
