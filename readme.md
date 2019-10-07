@@ -24,6 +24,8 @@ Each rule begins with the name of the rule and after the '|' need to write a reg
 
 ```scss
 // some comment...
+//  token name   some pattern   method name
+//    |            |             |
 tokenname | \bpattern\b &methodname ; // some commnet...
 ```
 
