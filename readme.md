@@ -68,13 +68,14 @@ error   | . &error;
 Each rule for syntax begins with the name of the rule and after it is one or more productions. Each production begins with '|". After, if there is, we can write the name of the method that will perform the additional action as for rule also for production. The rule ends with a ';'. For example:
 
 ```pug
-rule name   method name for this rule        method name for this production 
-      |      |                                  |
-expression &exp | operand operator operand &expprod1;
+// rule name                                method name for this production 
+//    |   method name for this rule            |
+//    |      |                                 |
+expression &exp | operand operator operand &expprod1 ;
 
 operator &op
 | plus &opplus
-| minus &opminus;
+| minus &opminus ;
 ```
 
 Now we will write the rules for the expression, which was discussed above.
