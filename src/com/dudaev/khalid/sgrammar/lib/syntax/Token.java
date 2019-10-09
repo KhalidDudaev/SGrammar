@@ -10,14 +10,16 @@ public class Token {
     public int column;
     public int lenght;
     public boolean isParse;
-    public int setLexemLenght;
+    // public int setLexemLenght;
     public String type = "EOF";
     
     public boolean match(String subrule){
         if(type.equals(subrule)) return true;
         return false;
     }
+
     
+
     public String toString(){
         return name + ": " +  content + "\n\t type:\t\t" + type + "\n\t line:\t\t" + line + "\n\t column:\t" + column + "\n\t lenght:\t" + lenght + "\n\t isParse:\t" + isParse + "\n";
     }
