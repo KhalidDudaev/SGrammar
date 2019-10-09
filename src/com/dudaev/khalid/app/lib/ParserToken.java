@@ -1,13 +1,14 @@
 package com.dudaev.khalid.app.lib;
 
-import java.util.regex.Matcher;
-
-// import com.dudaev.khalid.sgrammar.lib.Lexer;
 import com.dudaev.khalid.sgrammar.Parser;
 import com.dudaev.khalid.sgrammar.lib.syntax.Token;
 
+import java.util.regex.Matcher;
+
+// import com.dudaev.khalid.sgrammar.lib.Lexer;
+
 /**
- * ALexem
+ * ParserToken
  */
 public class ParserToken {
 
@@ -19,7 +20,8 @@ public class ParserToken {
 
     public Token space (Token token, Matcher m) {
         // System.out.println("############ " + this.lexer.column);
-        token.setLexemLenght        = 0;
+        // token.setLexemLenght        = 0;
+//        token.lenght                = 0;
         token.isParse               = false;
         return token;
     }
@@ -27,7 +29,8 @@ public class ParserToken {
     public Token nline (Token token, Matcher m) {
         // System.out.println("############ " + this.lexer.column);
 
-        token.setLexemLenght        = 0;
+        // token.setLexemLenght        = 0;
+//        token.lenght                = 0;
         token.isParse               = false;
 
         // token.column = 1;

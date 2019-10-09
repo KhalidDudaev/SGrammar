@@ -22,7 +22,7 @@ Step 1. We must define tokens for our grammar. It is be:
 
 Each rule begins with the name of the rule and after the '|' need to write a regular expression pattern for Lexer, which is designed to search in the input string for matching this token. After, if there is, we can write the name of the method that will perform the additional action. The method name has a '&' character as a prefix. Methods for additional actions are in the class that we are sending as a parameter to Lexer. Each rule ends with a ';'. Rules can also contain comments that begin with "//" and continue to the end of the line. Its looks like this:
 
-```scss
+``` scss
 // some comment...
 //  token name   some pattern   method name
 //    |            |             |

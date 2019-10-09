@@ -146,7 +146,7 @@ public class Grammar {
      * @param tokensText
      */
     private void parseTokens(String tokensText) {
-        Matcher mTokens                      = Pattern.compile("(?s)(?<nametoken>\\w+)\\s*\\|\\s*(?<pattern>.*?)(?:\\s*\\&(?<actiontoken>\\w+))?\\;").matcher(tokensText);
+        Matcher mTokens                      = Pattern.compile("(?s)(?<nametoken>\\w+)\\s*\\|\\s*(?<pattern>.*?)(?:\\s*\\&(?<actiontoken>\\w+))?\\s*\\;").matcher(tokensText);
 
         // String or = "";
 

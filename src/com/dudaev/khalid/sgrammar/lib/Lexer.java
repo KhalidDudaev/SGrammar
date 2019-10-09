@@ -38,7 +38,7 @@ public class Lexer {
     public int line                                     = 1;
     public int column                                   = 1;
     public int lexemLenght                              = 0;
-    public int setLexemLenght                           = 0;
+    // public int setLexemLenght                           = 0;
     public boolean isParse                              = true;
 
     
@@ -263,7 +263,7 @@ public class Lexer {
                 retToken.lenght         = lexemLenght;
 
                 isParse                 = true;
-                setLexemLenght          = 0;
+                // setLexemLenght          = 0;
                 
             } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException | NullPointerException e) {
                 methodExists                                    = false;
