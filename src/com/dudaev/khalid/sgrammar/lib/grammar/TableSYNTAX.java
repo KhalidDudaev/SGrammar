@@ -14,7 +14,6 @@ public class TableSYNTAX {
     HashMap<String, String> tableFIRST      = new HashMap<>();
     HashMap<String, String> tableFOLLOW     = new HashMap<>();
 
-
     HashMap
     <String,
      HashMap
@@ -36,7 +35,6 @@ public class TableSYNTAX {
         String followTokens;
         String firstTokens;
         ArrayList<GProduction> prods = new ArrayList<>();
-        String currProd = "";
 
         tkList.add("$");
 
@@ -52,17 +50,11 @@ public class TableSYNTAX {
             
             followTokens = tableFOLLOW.get(ruleName.getName());
             prods = rules.get(ruleName.getName()).getProductions();
-            currProd = ruleName.getName();
             firstTokens = tableFIRST.get(ruleName.getName());
 
-            // System.out.println("### " + ruleName.getName());
-
             for(GProduction prod: prods){
-                
                 String token = prod.getNodes().get(0).getNode();
-                
                 for(String fToken : firstTokens.split("\\|")) {
-
                     if( token.equals("e") && fToken.equals("e") ){
                         for (String follow : followTokens.split("\\s*\\|\\s*")) {
                             tableSYNTAX.get(follow).put(ruleName.getName(), prod); // R -> e
@@ -72,7 +64,6 @@ public class TableSYNTAX {
                     } else if( tableFIRST.containsKey(token) && fToken.matches(tableFIRST.get(token)) ){
                         tableSYNTAX.get(fToken).put(ruleName.getName(), prod);
                     }
-
                 }
             }
         }
@@ -83,14 +74,7 @@ public class TableSYNTAX {
     }
 
     public GProduction getProduction(String gToken, String gRule){
-
         return tableSYNTAX.get(gToken).get(gRule);
     }
-
-    // public void setTableSYNTAX(HashMap<String, HashMap<String, Production>> tableSYNTAX) {
-    //     this.tableSYNTAX = tableSYNTAX;
-    // }
-
-
 
 }

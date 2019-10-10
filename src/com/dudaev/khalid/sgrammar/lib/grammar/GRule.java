@@ -24,10 +24,6 @@ public class GRule {
         return name;
     }
 
-    // public void setName(String name) {
-    //     this.name = name;
-    // }
-
     public String getAction() {
         return action;
     }
@@ -35,10 +31,6 @@ public class GRule {
     public GNode getNode() {
         return gnode;
     }
-
-    // public void setAction(String action) {
-    //     this.action = action;
-    // }
 
     public ArrayList<GProduction> getProductions() {
         return productions;
@@ -49,11 +41,4 @@ public class GRule {
         return "Rule : { action : " + action + ", name : " + name + ", prod : " + productions + " }\n";
     }
 
-
-    // public void setProd(Production prod) {
-    //     this.prod = prod;
-    // }
-
-    
-    
 }

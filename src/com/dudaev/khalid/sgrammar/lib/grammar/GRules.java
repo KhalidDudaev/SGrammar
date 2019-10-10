@@ -35,11 +35,5 @@ public class GRules {
         return "Rules : { ruleList : " + ruleList + ",\n rulesMap : " + rulesMap + " }";
     }
 
-    // public void setRuleList(ArrayList<String> ruleList) {
-    //     this.ruleList = ruleList;
-    // }
-
-    
-
 }
 

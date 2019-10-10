@@ -1,10 +1,9 @@
 package com.dudaev.khalid.app.lib;
 
-import java.util.HashMap;
-import java.util.Stack;
-
 import com.dudaev.khalid.sgrammar.Parser;
 import com.dudaev.khalid.sgrammar.lib.syntax.Token;
+
+import java.util.Stack;
 
 /**
  * AParser
@@ -24,12 +23,12 @@ public class ParserSyntax {
     public void opAS(Token token){
         // System.out.println("OP " + token.content + " | " + this.parser.stackNode.size());
         // System.out.println("&&& opAS " + token.content);
-        // addOP(token, this.parser.stackNode.size());
+        // pushOP(token, this.parser.stackNode.size());
     }
 
     public void opMD(Token token){
         // System.out.println("OP " + token.content + " | " + this.parser.stackNode.size());
-        // addOP(token, this.parser.stackNode.size());
+        // pushOP(token, this.parser.stackNode.size());
     }
 
     public void paren(Token token){
@@ -47,39 +46,39 @@ public class ParserSyntax {
     public void fact(Token token){
         // System.out.println("FCT " + token.content + " ");
 
-        switch (token.type) {
+        switch (token.getType()) {
             case "lparen": lparen(token); break;
             case "rparen": rparen(token); break;
             default:
                 // System.out.println("FCT " + token.content + " ");
-                addVAL(token);
+                pushVAL(token);
                 break;
         }
     }
 
     public void opADD(Token token){
         // System.out.println("ADD " + token.content + " ");
-        addOP(token, this.parser.stackNode.size());
+        pushOP(token, this.parser.stackNode.size());
     }
 
     public void opSUB(Token token){
         // System.out.println("SUB " + token.content + " ");
-        addOP(token, this.parser.stackNode.size());
+        pushOP(token, this.parser.stackNode.size());
     }
 
     public void opMUL(Token token){
         // System.out.println("MUL " + token.content + " ");
-        addOP(token, this.parser.stackNode.size());
+        pushOP(token, this.parser.stackNode.size());
     }
 
     public void opDIV(Token token){
         // System.out.println("DIV " + token.content + " ");
-        addOP(token, this.parser.stackNode.size());
+        pushOP(token, this.parser.stackNode.size());
     }
 
     public void opPOW(Token token){
         // System.out.println("POW " + token.content + " ");
-        addOP(token, this.parser.stackNode.size());
+        pushOP(token, this.parser.stackNode.size());
     }
 
     public void ident(Token token){
@@ -89,46 +88,68 @@ public class ParserSyntax {
         // System.out.println("NUM " + token.content + " ");
     }
 
-    private void addVAL(Token val){
-        stackVAL.push(val.content);
+    private void pushVAL(Token val){
+        stackVAL.push(val.getContent());
 
     }
 
-    private void addOP(Token operator, Integer level){
+    private void pushOP(Token operator, Integer level){
         // String a = null;
         // String b = null;
         while(stackOP.size() > 0 && level <= stackOP.peek().level){
             // stackVAL.push(stackOP.pop().op.content);
-            stackVAL.push(exec(stackVAL.pop(), stackVAL.pop(), stackOP.pop().op.content));
+            stackVAL.push(exec(stackVAL.pop(), stackVAL.pop(), stackOP.pop().op.getContent()));
         }
         stackOP.push(new Operator(operator, level));
     }
 
     private String exec(String b, String a, String op) {
-        Double res = 0.0;
-
+        String res = null;
         switch (op) {
-            case "+": res = Double.parseDouble(a) + Double.parseDouble(b); break;
-            case "-": res = Double.parseDouble(a) - Double.parseDouble(b); break;
-            case "*": res = Double.parseDouble(a) * Double.parseDouble(b); break;
-            case "/": res = Double.parseDouble(a) / Double.parseDouble(b); break;
-            case "^": res = Math.pow(Double.parseDouble(a), Double.parseDouble(b)); break;
-            default:
-                break;
+            case "+": res = execADD(a, b); break;
+            case "-": res = execSUB(a, b); break;
+            case "*": res = execMUL(a, b); break;
+            case "/": res = execDIV(a, b); break;
+            case "^": res = execPOW(a, b); break;
+            default: break;
         }
+        return res;
+    }
 
+    private String execADD(String a, String b){
+        Double res = Double.parseDouble(a) + Double.parseDouble(b);
+        return res.toString();
+    }
+
+    private String execSUB(String a, String b){
+        Double res = Double.parseDouble(a) - Double.parseDouble(b);
+        return res.toString();
+    }
+
+    private String execMUL(String a, String b){
+        Double res = Double.parseDouble(a) * Double.parseDouble(b);
+        return res.toString();
+    }
+
+    private String execDIV(String a, String b){
+        Double res = Double.parseDouble(a) / Double.parseDouble(b);
+        return res.toString();
+    }
+
+    private String execPOW(String a, String b){
+        Double res = Math.pow(Double.parseDouble(a), Double.parseDouble(b));
         return res.toString();
     }
 
     public void error(Token token){
-        System.err.println("ERROR! SYNTAX >> L:" + token.line + " C:" + token.column + " >> '" + token.content + "'");
+        System.err.println("ERROR! SYNTAX >> L:" + token.getLine() + " C:" + token.getColumn() + " >> '" + token.getContent() + "'");
     } 
 
     public String endParsing(){
         // stackVAL.add(stackOP.pop().op.content);
         while(!stackOP.empty()) {
             // stackVAL.push(stackOP.pop().op.content);
-            stackVAL.push(exec(stackVAL.pop(), stackVAL.pop(), stackOP.pop().op.content));
+            stackVAL.push(exec(stackVAL.pop(), stackVAL.pop(), stackOP.pop().op.getContent()));
         }
 
         // System.out.println(stackVAL.toString());

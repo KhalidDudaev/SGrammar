@@ -22,7 +22,7 @@ public class ParserToken {
         // System.out.println("############ " + this.lexer.column);
         // token.setLexemLenght        = 0;
 //        token.lenght                = 0;
-        token.isParse               = false;
+        token.noParse();
         return token;
     }
 
@@ -31,7 +31,7 @@ public class ParserToken {
 
         // token.setLexemLenght        = 0;
 //        token.lenght                = 0;
-        token.isParse               = false;
+        token.noParse();
 
         // token.column = 1;
 
@@ -48,7 +48,7 @@ public class ParserToken {
 
     public Token error(Token token, Matcher m){
         // System.err.println("ERROR" + );
-        System.err.println("ERROR! TOKEN >> L:" + token.line + " C:" + token.column + " >> '" + token.content + "'");
+        System.err.println("ERROR! TOKEN >> L:" + token.getLine() + " C:" + token.getColumn() + " >> '" + token.getContent() + "'");
         return token;
     }
 

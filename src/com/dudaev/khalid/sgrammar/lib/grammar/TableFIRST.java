@@ -10,13 +10,10 @@ public class TableFIRST {
     HashMap<String, String> tableFIRST      = new HashMap<>();
     GRules rules                             = new GRules();
 
-    
     public TableFIRST(GRules rules) {
         this.rules = rules;
         makeFIRST();
     }
-
-    
 
     void makeFIRST(){
         String collFIRST;
@@ -68,11 +65,5 @@ public class TableFIRST {
 
         return buff;
     }
-
-    // public void setTableFIRST(HashMap<String, String> tableFIRST) {
-    //     this.tableFIRST = tableFIRST;
-    // }
-
-    
 
 }

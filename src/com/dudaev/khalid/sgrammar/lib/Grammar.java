@@ -8,12 +8,8 @@ import com.dudaev.khalid.sgrammar.lib.grammar.GProduction;
 import com.dudaev.khalid.sgrammar.lib.grammar.GRule;
 import com.dudaev.khalid.sgrammar.lib.grammar.GRules;
 import com.dudaev.khalid.sgrammar.lib.grammar.Table;
-// import com.dudaev.khalid.sgrammar.lib.grammar.TableFIRST;
-// import com.dudaev.khalid.sgrammar.lib.grammar.TableFOLLOW;
-import com.dudaev.khalid.sgrammar.lib.grammar.TableSYNTAX;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,23 +18,7 @@ public class Grammar {
     private GTokens tokens                          = new GTokens();
     private GRules rules                            = new GRules();
     private String tokensPattern                    = "";
-    
-    private ArrayList<String[]>     tokensList      = new ArrayList<>();
-    
     private Table table;
-    // private HashMap
-    //     <String,
-    //      HashMap
-    //         <String,
-    //                 GProduction>> tableSYNTAX       = new HashMap<>();
-    private TableSYNTAX tableSYNTAX;
-    
-    private HashMap<String, String> tableFIRST      = new HashMap<>();
-    private HashMap<String, String> tableFOLLOW     = new HashMap<>();
-
-    // private String tokenName;
-
-//    String tokensFIRST     = "";
     
     public void make (String grammar){
         makeTABLES(grammar);
@@ -46,18 +26,8 @@ public class Grammar {
 
     private void makeTABLES(String grammar){
 
-//        grammar.replaceAll("(?<comment>\\/\\/.*?)", "");
-//        grammar             = grammar.replaceAll("(?:\\s*//.*;)", "");
         grammar                 = grammar.replaceAll("(?s)(?:\\s*//.*?\\n)", "\n");
-//        Matcher matchTokens = Pattern.compile("(?s)TOKEN:(?<TOKEN>\\s*\\n(?:\\s+\\w+\\s*\\|\\s*.*?;)+)").matcher(grammar);
-//        Matcher matchRules  = Pattern.compile("(?s)SYNTAX:(?<SYNTAX>\\s*\\n(?:\\s+\\w+\\s*\\|\\s*.*?;)+)").matcher(grammar);
-//        matchTokens.find();
-//        matchRules.find();
-//        tokens              = matchTokens.group("TOKEN");
-//        rules               = matchRules.group("SYNTAX");
 
-        
-        // Matcher matchGrammar  = Pattern.compile("(?s)TOKEN:(?<TOKEN>\\s*\\n(?:\\s+\\w+\\s*\\|\\s*.*?;)+)|SYNTAX:(?<SYNTAX>\\s*\\n(?:\\s+\\w+\\s*\\|\\s*.*?;)+)").matcher(grammar);
         Matcher matchGrammar    = Pattern.compile("(?s)TOKEN:(?<TOKEN>\\s*\\n(?:\\s+\\w+\\s*\\|\\s*.*?\\n)+)|SYNTAX:(?<SYNTAX>\\s*\\n(?:.*?(?:\\s*\\|\\s*.*?\\;)+)+)").matcher(grammar);
         
         matchGrammar.find();
@@ -70,9 +40,9 @@ public class Grammar {
 
         table             = new Table(this.tokens, this.rules);
 
-        tableFIRST              = table.getFIRST();
-        tableFOLLOW             = table.getFOLLOW();
-        tableSYNTAX             = table.getSYNTAX();
+        // tableFIRST              = table.getFIRST();
+        // tableFOLLOW             = table.getFOLLOW();
+        // tableSYNTAX             = table.getSYNTAX();
 
         // System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------");
         // System.out.println(this.tokens);
@@ -148,16 +118,11 @@ public class Grammar {
     private void parseTokens(String tokensText) {
         Matcher mTokens                      = Pattern.compile("(?s)(?<nametoken>\\w+)\\s*\\|\\s*(?<pattern>.*?)(?:\\s*\\&(?<actiontoken>\\w+))?\\s*\\;").matcher(tokensText);
 
-        // String or = "";
-
-        // if(!tokensPattern.matches("")) or = "|";
-
         while (mTokens.find()) {
             
             String nametoken                = mTokens.group("nametoken");
             String pattern                  = mTokens.group("pattern");
             String actiontoken              = mTokens.group("actiontoken");
-            String action                   = null;
 
             pattern                         = pattern.trim();
             
@@ -173,8 +138,6 @@ public class Grammar {
      * @param rulesText
      */
     private void parseRules(String rulesText) {
-
-        // System.out.println("RULE TXT: " + rulesText);
 
         String rulesListPattern             = "";
         Matcher mRulesList                  = Pattern.compile("(?m)^\\s*(?<name>\\w+)(?:\\s*\\&\\w+)?\\s*\\|").matcher(rulesText);
@@ -197,7 +160,6 @@ public class Grammar {
             
             prods                           = prods.trim();
 
-            
             for( String prod : prods.split("\\s*\\|\\s*")){
                 
                 

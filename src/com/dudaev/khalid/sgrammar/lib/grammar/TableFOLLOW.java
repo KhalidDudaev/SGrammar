@@ -22,14 +22,11 @@ public class TableFOLLOW {
     void makeFOLLOW() {
         
         String follow       = "";
-        String[] prods;
         String collFOLLOW   = "";
-        boolean comp        = false;
         boolean start       = true;
 
         for (GRule ruleName : rules.list()) {
             collFOLLOW = "";
-            comp = false;
             
             follow = getFOLLOW(ruleName.getName());
 
@@ -50,8 +47,7 @@ public class TableFOLLOW {
      * @return
      */
     String getFOLLOW(String searchFollowRule){
-//        String rules        = rulesMap.get(ruleName);
-        // String follow;
+
         String tokensFOLLOW     = null;
         String token;
         
@@ -59,8 +55,7 @@ public class TableFOLLOW {
 
         for(GRule ruleName : rules.list()){
             for(GProduction prod : rules.get(ruleName.getName()).getProductions()) {
-                // String[] tokens = new String[prod.getNodes().size()];
-                // tokens = prod.getNodes().toArray(tokens);
+
                 ArrayList<GNode> tokens =  prod.getNodes();
 
                 for ( int it = 0; it < tokens.size(); it++) {
@@ -74,7 +69,6 @@ public class TableFOLLOW {
                             }
                         } else {
                             if(tableFOLLOW.containsKey(ruleName.getName())) {
-//                                System.out.println("### " + ruleName);
                                 tokensFOLLOW = tableFOLLOW.get(ruleName.getName());
                             }
                         }
@@ -89,9 +83,5 @@ public class TableFOLLOW {
     public HashMap<String, String> getTable() {
         return tableFOLLOW;
     }
-
-    // public void setTableFOLLOW(HashMap<String, String> tableFOLLOW) {
-    //     this.tableFOLLOW = tableFOLLOW;
-    // }
    
 }

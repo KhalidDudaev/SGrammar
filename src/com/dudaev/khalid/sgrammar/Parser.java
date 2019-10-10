@@ -15,24 +15,15 @@ import java.util.Stack;
  */
 public class Parser {
 
-    // private String source;
-
     private int pos                     = 0;
     public Stack<GProduction> stackProd   = new Stack<>();
     public Stack<GRule> stackRule   = new Stack<>();
     public Stack<GNode> stackNode   = new Stack<>();
-
-    // private Table table;
     private GTokens gtokens             = new GTokens();
-
     private Lexer lexer                 = new Lexer();
     private Grammar grammar             = new Grammar();
-    
     private ArrayList<Token> tokens     = new ArrayList<>();
-    
     private boolean skeepNoParse        = true;
-    
-    
     private String rulesText;
     private String sourceText;
     private Object actionLexer;
@@ -43,17 +34,14 @@ public class Parser {
     }
 
     private void init(){
-
         this.grammar.make(this.rulesText);
-
         this.lexer.setAction(actionLexer);
         this.lexer.setTokenPatterns(this.grammar.getGTokens());
         this.lexer.scan(this.sourceText);
-
         this.gtokens    = this.lexer.gtoken();
         this.tokens.addAll(this.lexer.getTokens());
         Token endToken = new Token();
-        endToken.type = "$";
+        endToken.setType("$");
         this.tokens.add(endToken);
     }
 
@@ -91,7 +79,6 @@ public class Parser {
         if((this.pos + relative) < this.tokens.size()) return this.tokens.get(this.pos + relative);
         System.err.println("No has next token");
         throw new ArrayIndexOutOfBoundsException();
-        // return new Token();
     }
 
     public Token nextToken(){
@@ -103,13 +90,12 @@ public class Parser {
 
     public boolean hasNextToken(){
         Token token = peek(0);
-        // if(this.pos < this.tokens.size()) return true;
-        if(this.pos < this.tokens.size() && token.content != "$") return true;
+        if(this.pos < this.tokens.size() && token.getContent() != "$") return true;
         else return false;
     }
 
     private boolean skeepNoParse(){
-        while(hasNextToken() && !peek(0).isParse){
+        while(hasNextToken() && !peek(0).isParse()){
             nextToken();
         }
         return hasNextToken();
@@ -139,36 +125,24 @@ public class Parser {
 
             GNode sp            = peekStack();
             Token tp            = peek(0);
-
             String node         = sp.getNode();
             GRule rule          = grammar.getRules().get(sp.getRule());
-            GProduction prod    = syntax().getProduction(tp.type, sp.getNode());
-
+            GProduction prod    = syntax().getProduction(tp.getType(), sp.getNode());
             String acRule       = rule.getAction();
             String acProd       = sp.getAction();
-            // String acProd       = null;
-            
-            // if(prod != null) acProd = prod.getAction();
-
-            // if(acRule != null) runAction(acRule, tp);
 
             if(sp.isTERMINAL()){
                 if(node.equals("e")){
                     nextStack();
                 } 
-                else if(node.matches(tp.type)) {
+                else if(node.matches(tp.getType())) {
                     runAction(acRule, tp);
                     runAction(acProd, tp);
                     nextStack();
                     nextToken();
                 } 
             } else {
-                // GNode rem = nextStack();
-                // GProduction prod = syntax().getProduction(tp.type, rem.getNode());
                 nextStack();
-
-                // runAction(acProd, tp);
-
                 if(prod != null) {
                     push2Stack(prod);
                 } else {
@@ -188,7 +162,6 @@ public class Parser {
             meth = actionSyntax.getClass().getDeclaredMethod( actionName, Token.class );
             try {
                 methodExists                                    = true;
-                // retToken = (Token) 
                 meth.invoke(actionSyntax, token);
             } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException | NullPointerException e) {
                 methodExists                                    = false;
@@ -197,9 +170,6 @@ public class Parser {
             // System.err.println("WARNING: Not found action of parser - " + actionName);
         }
 
-        // refToken
-
-        // return retToken;
     }
 
     private Object endAction() {
@@ -211,9 +181,7 @@ public class Parser {
             meth = actionSyntax.getClass().getDeclaredMethod( "endParsing" );
             try {
                 methodExists                                    = true;
-                // retToken = (Token) 
                 result = meth.invoke(actionSyntax);
-                
             } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException | NullPointerException e) {
                 methodExists                                    = false;
             }
@@ -221,11 +189,7 @@ public class Parser {
             System.err.println("WARNING: Not found action of parser - result");
         }
 
-        // refToken
-
         return result;
     }
-    
-
 
 }
