@@ -51,7 +51,7 @@ public class ParserSyntax {
             case "rparen": rparen(token); break;
             default:
                 // System.out.println("FCT " + token.content + " ");
-                pushVAL(token);
+                pushVAL(token.getContent());
                 break;
         }
     }
@@ -88,16 +88,14 @@ public class ParserSyntax {
         // System.out.println("NUM " + token.content + " ");
     }
 
-    private void pushVAL(Token val){
-        stackVAL.push(val.getContent());
+    private void pushVAL(String val){
+        // System.out.println(val);
+        stackVAL.push(val);
 
     }
 
     private void pushOP(Token operator, Integer level){
-        // String a = null;
-        // String b = null;
         while(stackOP.size() > 0 && level <= stackOP.peek().level){
-            // stackVAL.push(stackOP.pop().op.content);
             stackVAL.push(exec(stackVAL.pop(), stackVAL.pop(), stackOP.pop().op.getContent()));
         }
         stackOP.push(new Operator(operator, level));
@@ -117,26 +115,31 @@ public class ParserSyntax {
     }
 
     private String execADD(String a, String b){
+        //System.out.println("ADD ");
         Double res = Double.parseDouble(a) + Double.parseDouble(b);
         return res.toString();
     }
 
     private String execSUB(String a, String b){
+        //System.out.println("SUB ");
         Double res = Double.parseDouble(a) - Double.parseDouble(b);
         return res.toString();
     }
 
     private String execMUL(String a, String b){
+        //System.out.println("MUL ");
         Double res = Double.parseDouble(a) * Double.parseDouble(b);
         return res.toString();
     }
 
     private String execDIV(String a, String b){
+        //System.out.println("DIV ");
         Double res = Double.parseDouble(a) / Double.parseDouble(b);
         return res.toString();
     }
 
     private String execPOW(String a, String b){
+        //System.out.println("POW ");
         Double res = Math.pow(Double.parseDouble(a), Double.parseDouble(b));
         return res.toString();
     }

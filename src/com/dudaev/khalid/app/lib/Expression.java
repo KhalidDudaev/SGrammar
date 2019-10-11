@@ -24,8 +24,4 @@ public class Expression {
         return (String) parser.start(source);
     }
 
-    
-
-
-    
 }

@@ -38,7 +38,6 @@ public class Table {
     }
 
     void checkingERR() {
-        String rulesList = null;
         ArrayList<GProduction> prods = new ArrayList<>();
         String firstA;
         String firstB;        
@@ -46,7 +45,6 @@ public class Table {
         String errorBuffer = "";
         
         for(GRule ruleName: rules.list()){
-            rulesList   = rules.get(ruleName.getName()).getName();
             prods     = rules.get(ruleName.getName()).getProductions();
 
             if(tableFOLLOW.get(ruleName.getName()) == null) {
@@ -104,13 +102,13 @@ public class Table {
     String getIntersect(String matchA, String matchB){
 
         String res = null;
-        String commma = "";
+        String comma = "";
 
         for(String prod : matchA.split("\\s*\\|\\s*")){
             if(prod.matches(matchB)) {
                 if(res == null) res = "";
-                res += commma + prod;
-                commma = ", ";
+                res += comma + prod;
+                comma = ", ";
             }
         }
 

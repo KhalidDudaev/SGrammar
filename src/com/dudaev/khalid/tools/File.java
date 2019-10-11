@@ -8,15 +8,12 @@ import java.nio.file.Paths;
 
 public class File {
 
-    String aaa;
-
     /**
      * 
      * @param path
      * @return
      */
     public String read(String path) {
-        String out = "";
         Charset encoding = StandardCharsets.UTF_8;
         return this.read(path, encoding);
     }

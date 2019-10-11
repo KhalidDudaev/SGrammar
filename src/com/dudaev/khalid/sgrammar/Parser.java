@@ -15,15 +15,14 @@ import java.util.Stack;
  */
 public class Parser {
 
-    private int pos                     = 0;
-    public Stack<GProduction> stackProd   = new Stack<>();
-    public Stack<GRule> stackRule   = new Stack<>();
-    public Stack<GNode> stackNode   = new Stack<>();
-    private GTokens gtokens             = new GTokens();
-    private Lexer lexer                 = new Lexer();
-    private Grammar grammar             = new Grammar();
-    private ArrayList<Token> tokens     = new ArrayList<>();
-    private boolean skeepNoParse        = true;
+    private int pos                         = 0;
+    public Stack<GProduction> stackProd     = new Stack<>();
+    public Stack<GRule> stackRule           = new Stack<>();
+    public Stack<GNode> stackNode           = new Stack<>();
+    private Lexer lexer                     = new Lexer();
+    private Grammar grammar                 = new Grammar();
+    private ArrayList<Token> tokens         = new ArrayList<>();
+    private boolean skipNoParse            = true;
     private String rulesText;
     private String sourceText;
     private Object actionLexer;
@@ -38,25 +37,40 @@ public class Parser {
         this.lexer.setAction(actionLexer);
         this.lexer.setTokenPatterns(this.grammar.getGTokens());
         this.lexer.scan(this.sourceText);
-        this.gtokens    = this.lexer.gtoken();
         this.tokens.addAll(this.lexer.getTokens());
         Token endToken = new Token();
         endToken.setType("$");
         this.tokens.add(endToken);
     }
 
+    /**
+     * set the source as a string to parse
+     * @param source
+     */
     public void source(String source) {
         this.sourceText = source;
     }
 
+    /***
+     * set rules for the parser
+     * @param rules
+     */
     public void rules(String rules) {
         this.rulesText = rules;
     }
 
+    /**
+     * set an instance of a class with action methods for lexical parser rules 
+     * @param ac
+     */
     public void setTokenAction(Object ac){
         actionLexer = ac;
     }
 
+    /**
+     * set an instance of a class with action methods for syntax parser rules 
+     * @param ac
+     */
     public void setSyntaxAction(Object ac){
         actionSyntax = ac;
     }
@@ -84,7 +98,7 @@ public class Parser {
     public Token nextToken(){
         Token token = peek(0);
         this.pos++;
-        if(skeepNoParse) skeepNoParse();
+        if(skipNoParse) skipNoParse();
         return token;
     }
 
@@ -94,7 +108,7 @@ public class Parser {
         else return false;
     }
 
-    private boolean skeepNoParse(){
+    private boolean skipNoParse(){
         while(hasNextToken() && !peek(0).isParse()){
             nextToken();
         }
@@ -156,15 +170,13 @@ public class Parser {
 
     private void runAction(String actionName, Token token) {
         Method meth             = null;
-        boolean methodExists    = false;
 
         try {
             meth = actionSyntax.getClass().getDeclaredMethod( actionName, Token.class );
             try {
-                methodExists                                    = true;
                 meth.invoke(actionSyntax, token);
             } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException | NullPointerException e) {
-                methodExists                                    = false;
+
             }
         } catch (NullPointerException | SecurityException | NoSuchMethodException e) { 
             // System.err.println("WARNING: Not found action of parser - " + actionName);
@@ -173,17 +185,15 @@ public class Parser {
     }
 
     private Object endAction() {
-        Method meth             = null;
-        boolean methodExists    = false;
-        Object result = null;
+        Method meth     = null;
+        Object result   = null;
 
         try {
             meth = actionSyntax.getClass().getDeclaredMethod( "endParsing" );
             try {
-                methodExists                                    = true;
                 result = meth.invoke(actionSyntax);
             } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException | NullPointerException e) {
-                methodExists                                    = false;
+
             }
         } catch (NullPointerException | SecurityException | NoSuchMethodException e) { 
             System.err.println("WARNING: Not found action of parser - result");

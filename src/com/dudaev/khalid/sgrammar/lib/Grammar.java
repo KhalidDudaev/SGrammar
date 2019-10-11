@@ -116,18 +116,18 @@ public class Grammar {
      * @param tokensText
      */
     private void parseTokens(String tokensText) {
-        Matcher mTokens                      = Pattern.compile("(?s)(?<nametoken>\\w+)\\s*\\|\\s*(?<pattern>.*?)(?:\\s*\\&(?<actiontoken>\\w+))?\\s*\\;").matcher(tokensText);
+        Matcher mTokens                      = Pattern.compile("(?s)(?<name>\\w+)\\s*\\|\\s*(?<pattern>.*?)(?:\\s*\\&(?<action>\\w+))?\\s*\\;").matcher(tokensText);
 
         while (mTokens.find()) {
             
-            String nametoken                = mTokens.group("nametoken");
+            String name                     = mTokens.group("name");
             String pattern                  = mTokens.group("pattern");
-            String actiontoken              = mTokens.group("actiontoken");
+            String action                   = mTokens.group("action");
 
             pattern                         = pattern.trim();
             
-            tokens.add(nametoken, new GToken(nametoken, pattern, actiontoken));
-            tokensPattern += "|(?<" + nametoken + ">" + pattern + ")";
+            tokens.add(name, new GToken(name, pattern, action));
+            tokensPattern += "|(?<" + name + ">" + pattern + ")";
         }
 
         tokensPattern = tokensPattern.replaceFirst("\\|", "");

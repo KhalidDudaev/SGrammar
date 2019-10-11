@@ -9,9 +9,9 @@ public class Token {
     private String content = "$";
     private int line;
     private int column;
-    private int lenght;
+    private int length;
     private boolean isParse;
-    // private int setLexemLenght;
+    // private int setLexemeLength;
 
     public Token() {
 
@@ -24,16 +24,16 @@ public class Token {
      * @param content
      * @param line
      * @param column
-     * @param lenght
+     * @param length
      * @param isParse
      */
-    public Token(String type, String name, String content, int line, int column, int lenght, boolean isParse) {
+    public Token(String type, String name, String content, int line, int column, int length, boolean isParse) {
         this.type = type;
         this.name = name;
         this.content = content;
         this.line = line;
         this.column = column;
-        this.lenght = lenght;
+        this.length = length;
         this.isParse = isParse;
     }
 
@@ -43,7 +43,7 @@ public class Token {
     }
 
     public String toString(){
-        return name + ": " +  content + "\n\t type:\t\t" + type + "\n\t line:\t\t" + line + "\n\t column:\t" + column + "\n\t lenght:\t" + lenght + "\n\t isParse:\t" + isParse + "\n";
+        return name + ": " +  content + "\n\t type:\t\t" + type + "\n\t line:\t\t" + line + "\n\t column:\t" + column + "\n\t length:\t" + length + "\n\t isParse:\t" + isParse + "\n";
     }
 
     public String getName() {
@@ -78,12 +78,12 @@ public class Token {
         this.column = column;
     }
 
-    public int getLenght() {
-        return lenght;
+    public int getLength() {
+        return length;
     }
 
-    public void setLenght(int lenght) {
-        this.lenght = lenght;
+    public void setLength(int length) {
+        this.length = length;
     }
 
     public boolean isParse() {

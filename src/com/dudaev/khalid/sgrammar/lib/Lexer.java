@@ -18,8 +18,8 @@ public class Lexer {
 
     private GTokens tokens;
 
-    private ArrayList<Token> tokensArr                  = new ArrayList<>(); //    private static HashMap lexem = new HashMap<>();
-    private HashMap<String, Object> lexemsMap           = new HashMap<>();
+    private ArrayList<Token> tokensArr                  = new ArrayList<>(); //    private static HashMap lexeme = new HashMap<>();
+    private HashMap<String, Object> lexemesMap          = new HashMap<>();
 
     private int pos                                     = 0;
     private String pattern;
@@ -27,7 +27,7 @@ public class Lexer {
 
     public int line                                     = 1;
     public int column                                   = 1;
-    public int lexemLenght                              = 0;
+    public int lexemeLength                              = 0;
     public boolean isParse                              = true;
 
     public Lexer() {
@@ -51,14 +51,14 @@ public class Lexer {
         pos = 0;
     }
 
-    public GToken nextLexem() {
+    public GToken nextLexeme() {
         GToken token;
         if(hasNext()) {
             token = peek(0);
             pos++;
             return token;
         }
-        System.err.println("No has next lexem");
+        System.err.println("No has next lexeme");
         throw new ArrayIndexOutOfBoundsException();
     }
 
@@ -111,7 +111,7 @@ public class Lexer {
     public ArrayList<Token> scan (String prg) {
         String pattern          = makePattern();
         Matcher m               = Pattern.compile(pattern).matcher(prg);
-        GToken lexemCollect;
+        GToken lexemeCollect;
         String name;
         Token token;
 
@@ -119,12 +119,12 @@ public class Lexer {
 
         while (m.find()) {
             while (hasNext()) {
-                lexemCollect                                        = nextLexem();
-                name                                                = (String) lexemCollect.getName();
-                String lexem                                        = m.group(name);
+                lexemeCollect                                        = nextLexeme();
+                name                                                = (String) lexemeCollect.getName();
+                String lexeme                                        = m.group(name);
                 boolean methodExists                                = false;
 
-                if (lexem != null) {
+                if (lexeme != null) {
 
                     if(name.equals("nline")) {
                         line ++;
@@ -136,12 +136,12 @@ public class Lexer {
                     token.setName(name);
                     token.setLine(line);
                     token.setColumn(column);
-                    token.setContent(lexem);
+                    token.setContent(lexeme);
                     token.onParse();
-                    token.setLenght(lexem.length());
+                    token.setLength(lexeme.length());
                     token.setType(name);
                     
-                    Token retToken = runAction(lexemCollect.getAction(), token, m);
+                    Token retToken = runAction(lexemeCollect.getAction(), token, m);
 
                     if(retToken != null){
                         token = retToken;
@@ -149,10 +149,10 @@ public class Lexer {
                     }
                     
                     if (!methodExists) {
-                        column += lexem.length();
+                        column += lexeme.length();
                     }
                     
-                    lexemsMap.put(name, token);
+                    lexemesMap.put(name, token);
                     tokensArr.add(token);
                 }
             }
@@ -168,8 +168,8 @@ public class Lexer {
             meth = action.getClass().getDeclaredMethod( actionName, Token.class, Matcher.class );
             try {
                 retToken = (Token) meth.invoke(action, token, m);
-                column                  += lexemLenght;
-                retToken.setLenght(lexemLenght);
+                column                  += lexemeLength;
+                retToken.setLength(lexemeLength);
                 isParse                 = true;
             } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException | NullPointerException e) {
                 // methodExists                                    = false;
@@ -184,14 +184,14 @@ public class Lexer {
         String patternStart                                     = "(?m)(?<TOKEN>NOMATCH";
         String patternBody                                      = "";
         String patternEnd                                       = ")";
-        GToken lexem;
+        GToken lexeme;
 
         pattern = patternStart;
         
         while (hasNext()) {
-            lexem                                               = nextLexem();
-            name                                                = (String) lexem.getName();
-            patternBody                                         = (String) lexem.getPattern(); 
+            lexeme                                               = nextLexeme();
+            name                                                = (String) lexeme.getName();
+            patternBody                                         = (String) lexeme.getPattern(); 
             pattern                                             += "|(?<" + name + ">" + patternBody + ")";  
         }
         
