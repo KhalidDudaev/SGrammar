@@ -51,7 +51,7 @@ public class Parser {
         this.sourceText = source;
     }
 
-    /***
+    /**
      * set rules for the parser
      * @param rules
      */
@@ -81,32 +81,77 @@ public class Parser {
         }
     }
 
+    /**
+     * view the value that is on top of the stack
+     * @return
+     */
     public GNode peekStack(){
         return this.stackNode.peek();
     }
 
+    /**
+     * get value that is on top of the stack and to shift the stack
+     * @return
+     */
     public GNode nextStack(){
         return this.stackNode.pop();
     }
 
+    /**
+     * get a token from the current position of the source.
+     * @param relative is a shift relative to current position - positive or negative 
+     * @return
+     */
     public Token peek(int relative){
         if((this.pos + relative) < this.tokens.size()) return this.tokens.get(this.pos + relative);
         System.err.println("No has next token");
         throw new ArrayIndexOutOfBoundsException();
     }
 
+    /**
+     * get a token from the next position of the source and increase position counter
+     * @return
+     */
     public Token nextToken(){
-        Token token = peek(0);
         this.pos++;
+        Token token = peek(0);
         if(skipNoParse) skipNoParse();
         return token;
     }
 
+    /**
+     * check if the next token is available
+     * @return
+     */
     public boolean hasNextToken(){
         Token token = peek(0);
         if(this.pos < this.tokens.size() && token.getContent() != "$") return true;
         else return false;
     }
+
+    /**
+     * start parsing
+     * @param source
+     */
+    public Object start(String source){
+        this.sourceText = source;
+        return start();
+    }
+
+    /**
+     * start parsing
+     * @return
+     */
+    public Object start(){
+        this.init();
+
+        stackNode.push(new GNode("$", null, null, true));
+        stackNode.push(grammar.getRules().list().get(0).getNode());
+
+        return parse();
+    }
+
+    ////#region ####################################################################################
 
     private boolean skipNoParse(){
         while(hasNextToken() && !peek(0).isParse()){
@@ -117,20 +162,6 @@ public class Parser {
 
     private TableSYNTAX syntax(){
         return grammar.getTable().getSYNTAX();
-    }
-
-    public Object start(String source){
-        this.sourceText = source;
-        return start();
-    }
-
-    public Object start(){
-        this.init();
-
-        stackNode.push(new GNode("$", null, null, true));
-        stackNode.push(grammar.getRules().list().get(0).getNode());
-
-        return parse();
     }
 
     private Object parse(){
@@ -181,7 +212,6 @@ public class Parser {
         } catch (NullPointerException | SecurityException | NoSuchMethodException e) { 
             // System.err.println("WARNING: Not found action of parser - " + actionName);
         }
-
     }
 
     private Object endAction() {
@@ -202,4 +232,5 @@ public class Parser {
         return result;
     }
 
+    ////#endregion #################################################################################
 }
